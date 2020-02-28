@@ -12,12 +12,14 @@ fi
 # do not move upper, because adb can get lock
 [ -n "$_LOCK" ] || _LOCK=taken exec flock -n $0 $0 "${@}"
 
+export STEP="${2:-2}"
+
 if [ "$1" == "up" ]; then
-    amixer_result=$(amixer set Master 2%+)
+    amixer_result=$(amixer set Master $STEP%+)
 fi
 
 if [ "$1" == "down" ]; then
-    amixer_result=$(amixer set Master 2%-)
+    amixer_result=$(amixer set Master $STEP%-)
 fi
 
 volume_level=$(grep -oPm1 '\d+%' <<< "$amixer_result")
